@@ -20,6 +20,22 @@ void ReadUserSongs(const string& user_song_file,
                    map <string, int>& song_ids,
                    map <string, int>& user_ids,
                    vector <vector <int> >&user_songs);
+
+void SongsUnion(const vector <int>& songs1,
+                const vector <int>& songs2,
+                vector <int>& result);
+
+void SongsIntersection(const vector <int>& songs1,
+                       const vector <int>& songs2,
+                       vector <int>& result);
+ 
+double JaccardDistance(const vector <int>& songs1,
+                       const vector <int>& songs2);
+ 
+void NearestKUsers(const vector <vector <int> >& user_songs,
+                   const vector <int>& user,
+                   int k,
+                   vector <int>& nearest_users);
  
 }  // million_song_challenge
 
