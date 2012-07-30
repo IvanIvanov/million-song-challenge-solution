@@ -26,15 +26,20 @@ int main(void) {
   }
 
   sort(songs.rbegin(), songs.rend());
-  
+
+  printf("songs,percentile\n");
+
   int sum = 0;
   for (int i = 0; i < songs.size(); i++) {
     sum += songs[i].first;
+    if (i % 100 == 0) printf("%d,%lf\n", i, (double) sum / n);
+    /*
     printf("%s: %d\n", songs[i].second.c_str(), songs[i].first);
     if ((double) sum / n > 0.80) {
       printf("i = %d\n", i + 1);
       break;
     }
+    */
   }
 
   return 0;
