@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <map>
+#include <set>
 #include <vector>
 
 using namespace std;
@@ -44,8 +45,8 @@ void ReadUserIds(const string& user_file, map <string, int>& user_ids) {
 }
 
 void ReadUserSongs(const string& user_song_file,
-                   map <string, int>& song_ids,
-                   map <string, int>& user_ids,
+                   const map <string, int>& song_ids,
+                   const map <string, int>& user_ids,
                    vector <vector <int> >&user_songs) {
   FILE* file = fopen(user_song_file.c_str(), "r");
 
@@ -56,7 +57,8 @@ void ReadUserSongs(const string& user_song_file,
     char song[128];
     int freq;
     while (fscanf(file, " %s %s %d", user, song, &freq) == 3) {
-      user_songs[user_ids[user]].push_back(song_ids[song]);
+      user_songs[user_ids.find(user)->second].push_back(
+          song_ids.find(song)->second);
     }
   }
 
@@ -65,6 +67,25 @@ void ReadUserSongs(const string& user_song_file,
     user_songs[i].erase(
         unique(user_songs[i].begin(), user_songs[i].end()),
         user_songs[i].end());
+  }
+
+  fclose(file);
+}
+
+void WriteRecommendations(const string& recommendation_file,
+                          vector <vector <int> >& recommended_songs) {
+  FILE* file = fopen(recommendation_file.c_str(), "w");
+
+  if (file != NULL) {
+    int n = (int) recommended_songs.size();
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < (int) recommended_songs[i].size(); j++) {
+        fprintf(file, 
+                "%d%c",
+                recommended_songs[i][j],
+                (j + 1 == (int) recommended_songs[i].size()) ? '\n' : ' ');
+      }
+    }
   }
 
   fclose(file);
@@ -141,8 +162,117 @@ void NearestKUsers(const vector <vector <int> >& user_songs,
   
   nearest_users.clear();
   for (int i = 0; i < k && i < n; i++) {
-    printf("id = %d distance = %lf\n", user_distances[i].second, user_distances[i].first);
+    //printf("id = %d distance = %lf\n", user_distances[i].second, user_distances[i].first);
     nearest_users.push_back(user_distances[i].second);
+  }
+}
+
+void AllSongs(const vector <vector <int> >& user_songs,
+              vector <int>& all_songs) {
+  set <int> songs;
+  for (int i = 0; i < (int) user_songs.size(); i++) {
+    songs.insert(user_songs[i].begin(), user_songs[i].end());
+  }
+
+  all_songs = vector <int>(songs.begin(), songs.end());
+}
+
+void AllSongsForUsers(const vector <vector <int> >&user_songs,
+                      const vector <int>& users,
+                      vector <int>& result) {
+  set <int> songs;
+  int n = users.size();
+  for (int i = 0; i < n; i++) {
+    songs.insert(user_songs[users[i]].begin(), user_songs[users[i]].end());
+  }
+
+  result = vector <int> (songs.begin(), songs.end());
+}
+
+void ComputeSongPopularity(const vector <vector <int> >&user_songs,
+                           map <int, int>& popularity) {
+  popularity.clear();
+  int n = user_songs.size();
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < (int) user_songs[i].size(); j++) {
+      popularity[user_songs[i][j]]++;
+    }
+  }
+}
+
+void SortSongsByPopularity(const map <int, int>& popularity,
+                           vector <int>& songs) {
+  int n = songs.size();
+  vector <pair <int, int> > tmp;
+  for (int i = 0; i < n; i++) {
+    tmp.push_back(make_pair(popularity.find(songs[i])->second, songs[i]));
+  }
+
+  sort(tmp.rbegin(), tmp.rend());
+  for (int i = 0; i < n; i++) {
+    songs[i] = tmp[i].second;
+  }
+}
+
+void RecommendSongsForUser(const vector <vector <int> >& user_songs,
+                           const vector <int>& user,
+                           const map <int, int>& popularity,
+                           const vector <int>& songs_sorted_by_popularity,
+                           int recommendations,
+                           vector <int> &recommended_songs) {
+  int k = 1 + recommendations / 5;
+
+  vector <int> nearest_users;
+  NearestKUsers(user_songs, user, k, nearest_users);
+
+  vector <int> nearest_user_songs;
+  AllSongsForUsers(user_songs, nearest_users, nearest_user_songs);
+  SortSongsByPopularity(popularity, nearest_user_songs);
+
+  set <int> used(user.begin(), user.end());
+
+  int left = recommendations;
+  for (int i = 0; i < (int) nearest_user_songs.size() && left > 0; i++) {
+    if (used.find(nearest_user_songs[i]) == used.end()) {
+      left--;
+      recommended_songs.push_back(nearest_user_songs[i]);
+      used.insert(nearest_user_songs[i]);
+    }
+  }
+
+  for (int i = 0;
+       i < (int) songs_sorted_by_popularity.size() && left > 0; i++) {
+    if (used.find(songs_sorted_by_popularity[i]) != used.end()) {
+      left--;
+      recommended_songs.push_back(songs_sorted_by_popularity[i]);
+      used.insert(songs_sorted_by_popularity[i]);
+    }
+  }
+}
+
+void RecommendSongs(const vector <vector <int> >& user_songs,
+                    int from_user,
+                    int to_user,
+                    int recommendations,
+                    vector <vector <int> >& recommended_songs) {
+  map <int, int> popularity;
+  ComputeSongPopularity(user_songs, popularity);
+  
+  vector <int> all_songs;
+  AllSongs(user_songs, all_songs);
+  SortSongsByPopularity(popularity, all_songs);
+
+  recommended_songs.clear();
+  for (int i = from_user; i <= to_user && i < (int) user_songs.size(); i++) {
+    vector <int> songs;
+    RecommendSongsForUser(
+        user_songs,
+        user_songs[i],
+        popularity,
+        all_songs,
+        recommendations,
+        songs);
+    recommended_songs.push_back(songs);
   }
 }
 

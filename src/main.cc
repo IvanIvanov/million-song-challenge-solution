@@ -20,6 +20,7 @@ void testComputationSpeed(int n) {
                 song_ids,
                 user_ids, user_songs);
 
+
   int m = user_songs.size();
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -31,8 +32,27 @@ void testComputationSpeed(int n) {
 
 int main(void) {
   //testComputationSpeed(1000);
-  
-  
+ 
+
+  map <string, int> song_ids;
+  map <string, int> user_ids;
+  vector <vector <int> > user_songs;
+  ReadSongIds("data/kaggle_songs.txt", song_ids);
+  ReadUserIds("data/kaggle_users.txt", user_ids);
+  ReadUserSongs("data/kaggle_visible_evaluation_triplets.txt",
+                song_ids,
+                user_ids, user_songs);
+
+
+  vector <vector <int> > recommended_songs;
+  RecommendSongs(
+      user_songs, 0, 1000, 500, recommended_songs);
+
+  WriteRecommendations("recommendations.txt", recommended_songs);
+
+
+
+/*  
   map <string, int> song_ids;
   map <string, int> user_ids;
   vector <vector <int> > user_songs;
@@ -45,12 +65,28 @@ int main(void) {
   printf("%d\n", (int)user_ids.size());
   printf("%d\n", (int)user_songs.size());
 
+  vector <int> users;
+  users.push_back(13);
+  users.push_back(14);
+  users.push_back(15);
+  
+  vector <int> songs;
+  AllSongsForUsers(user_songs, users, songs);
+  for (int i = 0; i < (int) songs.size(); i++) {
+    printf("%d%c", songs[i], (i + 1 == (int) songs.size()) ? '\n' : ' ');
+  }
+
+  */
+
+/*
   vector <int> nearest_users;
   NearestKUsers(user_songs, user_songs[1050], 100, nearest_users);
   for (int i = 0; i < (int)nearest_users.size(); i++) {
     printf("%d%c",
         nearest_users[i], (i + 1 == (int)nearest_users.size()) ? '\n' : ' ');
   }
+*/
+
 
 /*
   vector <int> v1;
