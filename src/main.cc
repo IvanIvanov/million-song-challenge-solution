@@ -3,115 +3,73 @@
 #include "million_song_challenge.h"
 
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
-#include <vector>
 #include <map>
+#include <vector>
 
 using namespace std;
 using namespace million_song_challenge;
 
-void testComputationSpeed(int n) {
-  map <string, int> song_ids;
-  map <string, int> user_ids;
-  vector <vector <int> > user_songs;
-  ReadSongIds("data/kaggle_songs.txt", song_ids);
-  ReadUserIds("data/kaggle_users.txt", user_ids);
-  ReadUserSongs("data/kaggle_visible_evaluation_triplets.txt",
-                song_ids,
-                user_ids, user_songs);
+const static char* kDefaultSongsFile = "data/kaggle_songs.txt";
 
+const static char* kDefaultUsersFile = "data/kaggle_users.txt";
 
-  int m = user_songs.size();
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      double d = JaccardDistance(user_songs[i], user_songs[j]);
-      d++;
+const static char* kDefaultUserSongsFile =
+    "data/kaggle_visible_evaluation_triplets.txt";
+
+const static char* kDefaultRecommendationFile =
+    "recommendations.txt";
+
+const static int kDefaultSongsToRecommend = 500;
+
+int main(int argc, char** argv) {
+  string songs_file = kDefaultSongsFile;
+  string users_file = kDefaultUsersFile;
+  string user_songs_file = kDefaultUserSongsFile;
+  string recommendation_file = kDefaultRecommendationFile;
+  int songs_to_recommend = kDefaultSongsToRecommend;
+  int from_user = -1;
+  int to_user = -1;
+
+  for (int i = 1; i + 1 < argc; i += 2) {
+    if (!strcmp("--songs_file", argv[i])) {
+      songs_file = argv[i + 1];
+    } else if (!strcmp("--users_file", argv[i])) {
+      users_file = argv[i + 1];
+    } else if (!strcmp("--user_songs_file", argv[i])) {
+      users_file = argv[i + 1];
+    } else if (!strcmp("--recommendation_file", argv[i])) {
+      recommendation_file = argv[i + 1];
+    } else if (!strcmp("--songs_to_recommend", argv[i])) {
+      songs_to_recommend = atoi(argv[i + 1]);
+    } else if (!strcmp("--from_user", argv[i])) {
+      from_user = atoi(argv[i + 1]);
+    } else if (!strcmp("--to_user", argv[i])) {
+      to_user = atoi(argv[i + 1]);
     }
   }
-}
-
-int main(void) {
-  //testComputationSpeed(1000);
- 
 
   map <string, int> song_ids;
   map <string, int> user_ids;
   vector <vector <int> > user_songs;
-  ReadSongIds("data/kaggle_songs.txt", song_ids);
-  ReadUserIds("data/kaggle_users.txt", user_ids);
-  ReadUserSongs("data/kaggle_visible_evaluation_triplets.txt",
+  ReadSongIds(songs_file, song_ids);
+  ReadUserIds(users_file, user_ids);
+  ReadUserSongs(user_songs_file,
                 song_ids,
                 user_ids, user_songs);
 
+  if (from_user == -1 || to_user == -1) {
+    from_user = 0;
+    to_user = (int) user_songs.size() - 1;
+  }
 
   vector <vector <int> > recommended_songs;
   RecommendSongs(
-      user_songs, 0, 1000, 500, recommended_songs);
+      user_songs, from_user, to_user, songs_to_recommend, recommended_songs);
 
-  WriteRecommendations("recommendations.txt", recommended_songs);
-
-
-
-/*  
-  map <string, int> song_ids;
-  map <string, int> user_ids;
-  vector <vector <int> > user_songs;
-  ReadSongIds("data/kaggle_songs.txt", song_ids);
-  ReadUserIds("data/kaggle_users.txt", user_ids);
-  ReadUserSongs("data/kaggle_visible_evaluation_triplets.txt",
-                song_ids,
-                user_ids, user_songs);
-  printf("%d\n", (int)song_ids.size());
-  printf("%d\n", (int)user_ids.size());
-  printf("%d\n", (int)user_songs.size());
-
-  vector <int> users;
-  users.push_back(13);
-  users.push_back(14);
-  users.push_back(15);
-  
-  vector <int> songs;
-  AllSongsForUsers(user_songs, users, songs);
-  for (int i = 0; i < (int) songs.size(); i++) {
-    printf("%d%c", songs[i], (i + 1 == (int) songs.size()) ? '\n' : ' ');
-  }
-
-  */
-
-/*
-  vector <int> nearest_users;
-  NearestKUsers(user_songs, user_songs[1050], 100, nearest_users);
-  for (int i = 0; i < (int)nearest_users.size(); i++) {
-    printf("%d%c",
-        nearest_users[i], (i + 1 == (int)nearest_users.size()) ? '\n' : ' ');
-  }
-*/
-
-
-/*
-  vector <int> v1;
-  vector <int> v2;
-  v1.push_back(1);
-  v1.push_back(2);
-  v1.push_back(3);
-
-  v2.push_back(0);
-  v2.push_back(3);
-  v2.push_back(4);
-
-  vector <int> v3;
-  SongsUnion(v1, v2, v3);
-  for (int i = 0; i < (int)v3.size(); i++) {
-    printf("%d%c", v3[i], (i + 1 == (int) v3.size()) ? '\n' : ' ');
-  }
-
-  SongsIntersection(v1, v2, v3);
-  for (int i = 0; i < (int)v3.size(); i++) {
-    printf("%d%c", v3[i], (i + 1 == (int) v3.size()) ? '\n' : ' ');
-  }
-
-  printf("Distance: %lf\n", JaccardDistance(v1, v2));
-  */
+  WriteRecommendations(recommendation_file, recommended_songs);
 
   return 0;
 }
