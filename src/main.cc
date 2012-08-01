@@ -58,7 +58,8 @@ int main(int argc, char** argv) {
   ReadUserIds(users_file, user_ids);
   ReadUserSongs(user_songs_file,
                 song_ids,
-                user_ids, user_songs);
+                user_ids,
+                user_songs);
 
   if (from_user == -1 || to_user == -1) {
     from_user = 0;

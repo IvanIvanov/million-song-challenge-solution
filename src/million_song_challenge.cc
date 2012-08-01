@@ -177,7 +177,7 @@ void AllSongs(const vector <vector <int> >& user_songs,
   all_songs = vector <int>(songs.begin(), songs.end());
 }
 
-void AllSongsForUsers(const vector <vector <int> >&user_songs,
+void AllSongsForUsers(const vector <vector <int> >& user_songs,
                       const vector <int>& users,
                       vector <int>& result) {
   set <int> songs;
@@ -189,7 +189,7 @@ void AllSongsForUsers(const vector <vector <int> >&user_songs,
   result = vector <int> (songs.begin(), songs.end());
 }
 
-void ComputeSongPopularity(const vector <vector <int> >&user_songs,
+void ComputeSongPopularity(const vector <vector <int> >& user_songs,
                            map <int, int>& popularity) {
   popularity.clear();
   int n = user_songs.size();
@@ -242,7 +242,7 @@ void RecommendSongsForUser(const vector <vector <int> >& user_songs,
 
   for (int i = 0;
        i < (int) songs_sorted_by_popularity.size() && left > 0; i++) {
-    if (used.find(songs_sorted_by_popularity[i]) != used.end()) {
+    if (used.find(songs_sorted_by_popularity[i]) == used.end()) {
       left--;
       recommended_songs.push_back(songs_sorted_by_popularity[i]);
       used.insert(songs_sorted_by_popularity[i]);
