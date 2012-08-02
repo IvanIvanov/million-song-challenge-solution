@@ -220,7 +220,7 @@ void RecommendSongsForUser(const vector <vector <int> >& user_songs,
                            const vector <int>& songs_sorted_by_popularity,
                            int recommendations,
                            vector <int> &recommended_songs) {
-  int k = 1 + recommendations / 5;
+  int k = 1 + recommendations / 20;
 
   vector <int> nearest_users;
   NearestKUsers(user_songs, user, k, nearest_users);
@@ -273,6 +273,7 @@ void RecommendSongs(const vector <vector <int> >& user_songs,
         recommendations,
         songs);
     recommended_songs.push_back(songs);
+    printf("Done with user %d\n", i + 1);
   }
 }
 

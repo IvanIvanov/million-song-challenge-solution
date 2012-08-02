@@ -1,13 +1,14 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
-#include "million_song_challenge.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
 #include <map>
 #include <vector>
+
+#include "million_song_challenge.h"
+#include "posix_multithreaded_recommender.h"
 
 using namespace std;
 using namespace million_song_challenge;
@@ -24,6 +25,8 @@ const static char* kDefaultRecommendationFile =
 
 const static int kDefaultSongsToRecommend = 500;
 
+const static int kDefaultThreads = 4;
+
 int main(int argc, char** argv) {
   string songs_file = kDefaultSongsFile;
   string users_file = kDefaultUsersFile;
@@ -32,6 +35,7 @@ int main(int argc, char** argv) {
   int songs_to_recommend = kDefaultSongsToRecommend;
   int from_user = -1;
   int to_user = -1;
+  int number_of_threads = kDefaultThreads;
 
   for (int i = 1; i + 1 < argc; i += 2) {
     if (!strcmp("--songs_file", argv[i])) {
@@ -48,6 +52,8 @@ int main(int argc, char** argv) {
       from_user = atoi(argv[i + 1]);
     } else if (!strcmp("--to_user", argv[i])) {
       to_user = atoi(argv[i + 1]);
+    } else if (!strcmp("--number_of_threads", argv[i])) {
+      number_of_threads = atoi(argv[i + 1]);
     }
   }
 
@@ -67,11 +73,16 @@ int main(int argc, char** argv) {
   }
 
   vector <vector <int> > recommended_songs;
-  RecommendSongs(
-      user_songs, from_user, to_user, songs_to_recommend, recommended_songs);
+  RecommendSongsMultithreaded(
+      number_of_threads,
+      user_songs,
+      from_user,
+      to_user,
+      songs_to_recommend,
+      recommended_songs);
 
-  WriteRecommendations(recommendation_file, recommended_songs);
-
+  WriteRecommendations(recommendation_file, recommended_songs); 
+  
   return 0;
 }
 
