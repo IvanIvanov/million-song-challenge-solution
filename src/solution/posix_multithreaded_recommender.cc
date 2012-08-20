@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "million_song_challenge.h"
+#include "recommender_utils.h"
 
 using namespace std;
 
@@ -75,5 +75,5 @@ void RecommendSongsMultithreaded(int number_of_threads,
   }
 }
 
-}  // million_song_challenge
+}  // solution
 

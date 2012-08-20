@@ -1,7 +1,7 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
-#ifndef SOLUTION_MILLION_SONG_CHALLENGE_H_
-#define SOLUTION_MILLION_SONG_CHALLENGE_H_
+#ifndef SOLUTION_RECOMMENDER_UTILS_H_
+#define SOLUTION_RECOMMENDER_UTILS_H_
 
 #include <algorithm>
 #include <map>
@@ -69,5 +69,5 @@ void RecommendSongs(const vector <vector <int> >& user_songs,
  
 }  // solution
 
-#endif  // SOLUTION_MILLION_SONG_CHALLENGE_H_
+#endif  // SOLUTION_RECOMMENDER_UTILS
 

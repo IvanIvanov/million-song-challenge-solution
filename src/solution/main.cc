@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-#include "million_song_challenge.h"
+#include "recommender_utils.h"
 #include "posix_multithreaded_recommender.h"
 
 using namespace std;

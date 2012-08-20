@@ -1,6 +1,6 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
-#include "million_song_challenge.h"
+#include "recommender_utils.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -277,5 +277,5 @@ void RecommendSongs(const vector <vector <int> >& user_songs,
   }
 }
 
-}  // million_song_challenge
+}  // solution
 

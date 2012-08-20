@@ -1,7 +1,7 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
 #ifndef SOLUTION_POSIX_MULTITHREADED_RECOMMENDER_H_
-#define SOLUTION_SONG_CHALLENGE_POSIX_MULTITHREADED_RECOMMENDER_H_
+#define SOLUTION_POSIX_MULTITHREADED_RECOMMENDER_H_
 
 #include <vector>
 
@@ -17,7 +17,7 @@ void RecommendSongsMultithreaded(int number_of_threads,
                                  int songs_to_recommend,
                                  vector <vector <int> >& recommended_songs);
 
-}  // million_songs_challenge
+}  // solution
 
 #endif
 
