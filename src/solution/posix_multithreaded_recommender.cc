@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace million_song_challenge {
+namespace solution {
 
 struct TaskArguments {
   vector <vector <int> >* user_songs;

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace million_song_challenge {
+namespace solution {
 
 void ReadSongIds(const string& song_id_file, map <string, int>& song_ids) {
   FILE* file = fopen(song_id_file.c_str(), "r");

@@ -1,14 +1,14 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
-#ifndef MILLION_SONG_CHALLENGE_POSIX_MULTITHREADED_RECOMMENDER_H_
-#define MILLION_SONG_CHALLENGE_POSIX_MULTITHREADED_RECOMMENDER_H_
+#ifndef SOLUTION_POSIX_MULTITHREADED_RECOMMENDER_H_
+#define SOLUTION_SONG_CHALLENGE_POSIX_MULTITHREADED_RECOMMENDER_H_
 
 #include <vector>
 
 //TODO(ivan): don't do this!
 using namespace std;
 
-namespace million_song_challenge {
+namespace solution {
 
 void RecommendSongsMultithreaded(int number_of_threads,
                                  vector <vector <int> >&user_songs,

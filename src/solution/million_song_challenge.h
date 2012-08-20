@@ -1,7 +1,7 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
 
-#ifndef MILLION_SONG_CHALLENGE_MILLION_SONG_CHALLENGE_H_
-#define MILLION_SONG_CHALLENGE_MILLION_SONG_CHALLENGE_H_
+#ifndef SOLUTION_MILLION_SONG_CHALLENGE_H_
+#define SOLUTION_MILLION_SONG_CHALLENGE_H_
 
 #include <algorithm>
 #include <map>
@@ -10,7 +10,7 @@
 
 using namespace std;
 
-namespace million_song_challenge {
+namespace solution {
 
 void ReadSongIds(const string& song_id_file, map <string, int>& song_ids);
 
@@ -67,7 +67,7 @@ void RecommendSongs(const vector <vector <int> >& user_songs,
                     int recommendations,
                     vector <vector <int> >& recommended_songs);
  
-}  // million_song_challenge
+}  // solution
 
-#endif  // MILLION_SONG_CHALLENGE_MILLION_SONG_CHALLENGE_H_
+#endif  // SOLUTION_MILLION_SONG_CHALLENGE_H_
 

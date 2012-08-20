@@ -11,7 +11,7 @@
 #include "posix_multithreaded_recommender.h"
 
 using namespace std;
-using namespace million_song_challenge;
+using namespace solution;
 
 const static char* kDefaultSongsFile = "data/kaggle_songs.txt";
 

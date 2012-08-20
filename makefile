@@ -1,6 +1,3 @@
 solution:
-	g++ -Wall -lpthread -I"src/" src/million_song_challenge.cc src/posix_multithreaded_recommender.cc src/main.cc -O2 -o bin/main
-
-experiment:
-	g++ src/experiment.cc -o bin/main
+	g++ -Wall -lpthread -I"src/solution" src/solution/million_song_challenge.cc src/solution/posix_multithreaded_recommender.cc src/solution/main.cc -O2 -o bin/main
 
