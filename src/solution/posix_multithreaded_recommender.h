@@ -5,9 +5,6 @@
 
 #include <vector>
 
-//TODO(ivan): don't do this!
-using namespace std;
-
 namespace solution {
 
 // Recommends exactly "songs_to_recommend" number of songs for the users with
@@ -25,11 +22,11 @@ namespace solution {
 // each part is assigned to a different thread. The number of threads is given
 // by the number_of_threads parameter.
 void RecommendSongsMultithreaded(int number_of_threads,
-                                 vector <vector <int> >&user_songs,
+                                 std::vector <std::vector <int> >&user_songs,
                                  int from_user,
                                  int to_user,
                                  int songs_to_recommend,
-                                 vector <vector <int> >& recommended_songs);
+                                 std::vector <std::vector <int> >& recommended_songs);
 
 }  // solution
 
