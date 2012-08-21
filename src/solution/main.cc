@@ -1,4 +1,9 @@
 // Author: Ivan Ivanov (ivan.vladimirov.ivanov@gmail.com)
+//
+// Driver program for the song recommendation system.
+//
+// Example usage:
+//   main --recommendation_file recommendations.txt --number_of_threads 4
 
 #include <cstdio>
 #include <cstdlib>
@@ -7,11 +12,11 @@
 #include <map>
 #include <vector>
 
-#include "recommender_utils.h"
 #include "posix_multithreaded_recommender.h"
+#include "recommender_utils.h"
 
-using namespace std;
 using namespace solution;
+using namespace std;
 
 const static char* kDefaultSongsFile = "data/kaggle_songs.txt";
 

@@ -47,7 +47,7 @@ void RecommendSongsMultithreaded(int number_of_threads,
                                  int to_user,
                                  int songs_to_recommend,
                                  vector <vector <int> >& recommended_songs) {
-  
+
   int tasks_per_thread = (to_user - from_user) / number_of_threads;
   vector <pthread_t> threads(number_of_threads);
   vector <TaskArguments> task_arguments(number_of_threads);
