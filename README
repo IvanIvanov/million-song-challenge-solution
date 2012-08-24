@@ -7,7 +7,7 @@ with the final ranklist can be found at:
   http://www.kaggle.com/c/msdchallenge/
 
 The solution is implemented in C++ and depends on POSIX Threads. To compile
-the solution under a Linux run the command:
+the solution under Linux run the command:
 
   make solution
 
